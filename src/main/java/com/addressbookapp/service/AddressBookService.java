@@ -12,6 +12,7 @@ public class AddressBookService {
 
     private List<Contact> contactList = new ArrayList<>();
     private static final String FILE_PATH = "AddressBook.txt";
+    private static final String CSV_FILE = "AddressBook.csv";
 
     public boolean addContact(Contact contact){
 
@@ -155,6 +156,56 @@ public class AddressBookService {
 
         }catch(Exception e){
             System.out.println("Error reading file: " + e.getMessage());
+        }
+    }
+    
+    public void writeContactsToCSV() {
+
+        try {
+
+            java.io.PrintWriter writer = new java.io.PrintWriter(new java.io.File(CSV_FILE));
+
+            writer.println("firstName,lastName,address,city,state,zip,phoneNumber,email");
+
+            for (Contact contact : contactList) {
+
+                writer.println(
+                        contact.getFirstName() + "," +
+                        contact.getLastName() + "," +
+                        contact.getAddress() + "," +
+                        contact.getCity() + "," +
+                        contact.getState() + "," +
+                        contact.getZip() + "," +
+                        contact.getPhoneNumber() + "," +
+                        contact.getEmail()
+                );
+            }
+
+            writer.close();
+
+            System.out.println("Contacts written to CSV file successfully.");
+
+        } catch (Exception e) {
+            System.out.println("Error writing CSV file: " + e.getMessage());
+        }
+    }
+    
+    public void readContactsFromCSV() {
+
+        try {
+
+            java.nio.file.Path path = java.nio.file.Paths.get(CSV_FILE);
+
+            java.util.List<String> lines = java.nio.file.Files.readAllLines(path);
+
+            System.out.println("\nContacts from CSV file:");
+
+            for (int i = 1; i < lines.size(); i++) {   // skip header
+                System.out.println(lines.get(i));
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error reading CSV file: " + e.getMessage());
         }
     }
     
