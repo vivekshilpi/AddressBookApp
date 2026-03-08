@@ -1,89 +1,56 @@
 package com.addressbookapp.service;
 
 import com.addressbookapp.model.Contact;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Scanner;
 
 public class AddressBookService {
 
-    private List<Contact> contactList = new ArrayList<>();
+    private List<Contact> contacts = new ArrayList<>();
 
-    public void addContact(Scanner scanner) {
-
-        System.out.print("Enter First Name: ");
-        String firstName = scanner.nextLine();
-
-        System.out.print("Enter Last Name: ");
-        String lastName = scanner.nextLine();
-
-        System.out.print("Enter Address: ");
-        String address = scanner.nextLine();
-
-        System.out.print("Enter City: ");
-        String city = scanner.nextLine();
-
-        System.out.print("Enter State: ");
-        String state = scanner.nextLine();
-
-        System.out.print("Enter Zip: ");
-        String zip = scanner.nextLine();
-
-        System.out.print("Enter Phone Number: ");
-        String phoneNumber = scanner.nextLine();
-
-        System.out.print("Enter Email: ");
-        String email = scanner.nextLine();
-
-        Contact contact = new Contact(firstName, lastName, address,
-                city, state, zip, phoneNumber, email);
-
-        contactList.add(contact);
-
-        System.out.println("\nContact added successfully!");
-    }
-
-    public void editContact(String name, Scanner scanner) {
-
-        for (Contact contact : contactList) {
-
-            if (contact.getFirstName().equalsIgnoreCase(name)) {
-
-                System.out.print("Enter new Address: ");
-                contact.setAddress(scanner.nextLine());
-
-                System.out.print("Enter new City: ");
-                contact.setCity(scanner.nextLine());
-
-                System.out.print("Enter new State: ");
-                contact.setState(scanner.nextLine());
-
-                System.out.print("Enter new Zip: ");
-                contact.setZip(scanner.nextLine());
-
-                System.out.print("Enter new Phone: ");
-                contact.setPhoneNumber(scanner.nextLine());
-
-                System.out.print("Enter new Email: ");
-                contact.setEmail(scanner.nextLine());
-
-                System.out.println("\nContact updated successfully!");
-                return;
-            }
-        }
-
-        System.out.println("Contact not found.");
+    public void addContact(Contact contact) {
+        contacts.add(contact);
     }
 
     public void displayContacts() {
 
-        if (contactList.isEmpty()) {
+        if (contacts.isEmpty()) {
             System.out.println("No contacts available.");
             return;
         }
 
-        for (Contact contact : contactList) {
+        for (Contact contact : contacts) {
             System.out.println(contact);
         }
+    }
+
+    public Contact findContact(String firstName) {
+
+        for (Contact contact : contacts) {
+            if (contact.getFirstName().equalsIgnoreCase(firstName)) {
+                return contact;
+            }
+        }
+
+        return null;
+    }
+
+    public boolean deleteContact(String firstName) {
+
+        Iterator<Contact> iterator = contacts.iterator();
+
+        while (iterator.hasNext()) {
+
+            Contact contact = iterator.next();
+
+            if (contact.getFirstName().equalsIgnoreCase(firstName)) {
+                iterator.remove();
+                return true;
+            }
+        }
+
+        return false;
     }
 }
