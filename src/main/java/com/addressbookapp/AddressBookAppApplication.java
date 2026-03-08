@@ -1,57 +1,53 @@
 package com.addressbookapp;
 
 import java.util.Scanner;
-
-import com.addressbookapp.model.Contact;
 import com.addressbookapp.service.AddressBookService;
 
 public class AddressBookAppApplication {
 
     public static void main(String[] args) {
 
-        System.out.println("Welcome to Address Book Program");
-
         Scanner scanner = new Scanner(System.in);
-
-        System.out.print("Enter First Name: ");
-        String firstName = scanner.nextLine();
-
-        System.out.print("Enter Last Name: ");
-        String lastName = scanner.nextLine();
-
-        System.out.print("Enter Address: ");
-        String address = scanner.nextLine();
-
-        System.out.print("Enter City: ");
-        String city = scanner.nextLine();
-
-        System.out.print("Enter State: ");
-        String state = scanner.nextLine();
-
-        System.out.print("Enter Zip: ");
-        String zip = scanner.nextLine();
-
-        System.out.print("Enter Phone Number: ");
-        String phoneNumber = scanner.nextLine();
-
-        System.out.print("Enter Email: ");
-        String email = scanner.nextLine();
-
-        Contact contact = new Contact(
-                firstName,
-                lastName,
-                address,
-                city,
-                state,
-                zip,
-                phoneNumber,
-                email
-        );
-
         AddressBookService service = new AddressBookService();
 
-        service.addContact(contact);
-        service.displayContact();
+        int choice;
+
+        do {
+
+            System.out.println("\n===== Address Book Menu =====");
+            System.out.println("1. Add Contact");
+            System.out.println("2. Edit Contact");
+            System.out.println("3. Display Contacts");
+            System.out.println("4. Exit");
+
+            System.out.print("Enter choice: ");
+            choice = Integer.parseInt(scanner.nextLine());
+
+            switch (choice) {
+
+                case 1:
+                    service.addContact(scanner);
+                    break;
+
+                case 2:
+                    System.out.print("Enter first name to edit: ");
+                    String name = scanner.nextLine();
+                    service.editContact(name, scanner);
+                    break;
+
+                case 3:
+                    service.displayContacts();
+                    break;
+
+                case 4:
+                    System.out.println("Exiting program...");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice!");
+            }
+
+        } while (choice != 4);
 
         scanner.close();
     }
