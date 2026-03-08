@@ -1,70 +1,116 @@
 package com.addressbookapp.model;
 
 import java.util.Objects;
+
 public class Contact {
 
-    private String firstName;
-    private String lastName;
-    private String address;
-    private String city;
-    private String state;
-    private String zip;
-    private String phoneNumber;
-    private String email;
+	private String firstName;
+	private String lastName;
+	private String address;
+	private String city;
+	private String state;
+	private String zip;
+	private String phoneNumber;
+	private String email;
 
-    public Contact(String firstName, String lastName, String address,
-                   String city, String state, String zip,
-                   String phoneNumber, String email) {
+	public Contact(String firstName, String lastName, String address, String city, String state, String zip,
+			String phoneNumber, String email) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.address = address;
+		this.city = city;
+		this.state = state;
+		this.zip = zip;
+		this.phoneNumber = phoneNumber;
+		this.email = email;
+	}
 
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-        this.city = city;
-        this.state = state;
-        this.zip = zip;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-    }
+	@Override
+	public String toString() {
+		return "firstName: " + firstName + " | lastName: " + lastName + " | address: " + address + " | city: " + city
+				+ " | state: " + state + " | zip: " + zip + " | phoneNumber: " + phoneNumber + " | email: " + email;
+	}
 
-    public String getFirstName() { return firstName; }
-    public String getLastName() { return lastName; }
+	public String getFirstName() {
+		return firstName;
+	}
 
-    public void setAddress(String address) { this.address = address; }
-    public void setCity(String city) { this.city = city; }
-    public void setState(String state) { this.state = state; }
-    public void setZip(String zip) { this.zip = zip; }
-    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
-    public void setEmail(String email) { this.email = email; }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-    @Override
-    public String toString() {
-        return "\nContact Details:\n" +
-                "First Name : " + firstName + "\n" +
-                "Last Name  : " + lastName + "\n" +
-                "Address    : " + address + "\n" +
-                "City       : " + city + "\n" +
-                "State      : " + state + "\n" +
-                "Zip        : " + zip + "\n" +
-                "Phone      : " + phoneNumber + "\n" +
-                "Email      : " + email;
-    }
-    
-    @Override
-    public boolean equals(Object obj) {
+	public String getLastName() {
+		return lastName;
+	}
 
-        if (this == obj) return true;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
-        if (obj == null || getClass() != obj.getClass())
-            return false;
+	public String getAddress() {
+		return address;
+	}
 
-        Contact contact = (Contact) obj;
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
-        return firstName.equalsIgnoreCase(contact.firstName)
-                && lastName.equalsIgnoreCase(contact.lastName);
-    }
+	public String getCity() {
+		return city;
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(firstName.toLowerCase(), lastName.toLowerCase());
-    }
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getZip() {
+		return zip;
+	}
+
+	public void setZip(String zip) {
+		this.zip = zip;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	 @Override
+	    public boolean equals(Object o) {
+
+	        if (this == o) return true;
+
+	        if (o == null || getClass() != o.getClass()) return false;
+
+	        Contact contact = (Contact) o;
+
+	        return firstName.equalsIgnoreCase(contact.firstName) &&
+	               lastName.equalsIgnoreCase(contact.lastName);
+	    }
+
+	    @Override
+	    public int hashCode() {
+	        return Objects.hash(firstName.toLowerCase(), lastName.toLowerCase());
+	    }
+
 }
