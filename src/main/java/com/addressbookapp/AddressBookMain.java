@@ -1,5 +1,6 @@
 package com.addressbookapp;
 
+import com.addressbookapp.manager.AddressBookManager;
 import com.addressbookapp.model.Contact;
 import com.addressbookapp.service.AddressBookService;
 
@@ -7,77 +8,99 @@ import java.util.Scanner;
 
 public class AddressBookMain {
 
-    public static void start() {
+    public static void start(){
 
         Scanner scanner = new Scanner(System.in);
-        AddressBookService service = new AddressBookService();
+        AddressBookManager manager = new AddressBookManager();
 
-        while (true) {
+        while(true){
 
-            System.out.println("\n----- Address Book Menu -----");
-            System.out.println("1 Add Contact");
-            System.out.println("2 Display Contacts");
-            System.out.println("3 Edit Contact");
-            System.out.println("4 Delete Contact");
-            System.out.println("5 Exit");
+            System.out.println("\n------ AddressBook System ------");
+            System.out.println("1 Create AddressBook");
+            System.out.println("2 Select AddressBook");
+            System.out.println("3 Show AddressBooks");
+            System.out.println("4 Exit");
 
-            System.out.print("Enter choice: ");
+            System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
             scanner.nextLine();
 
-            switch (choice) {
+            switch(choice){
 
                 case 1:
 
-                    char option;
+                    System.out.print("Enter new AddressBook name: ");
+                    String name = scanner.nextLine();
 
-                    do {
+                    manager.createAddressBook(name);
+                    break;
 
-                        System.out.print("First Name: ");
-                        String firstName = scanner.nextLine();
+                case 2:
 
-                        System.out.print("Last Name: ");
-                        String lastName = scanner.nextLine();
+                    manager.displayAddressBooks();
 
-                        System.out.print("Address: ");
-                        String address = scanner.nextLine();
+                    System.out.print("\nEnter AddressBook name to open: ");
+                    String bookName = scanner.nextLine();
 
-                        System.out.print("City: ");
-                        String city = scanner.nextLine();
+                    AddressBookService service = manager.getAddressBook(bookName);
 
-                        System.out.print("State: ");
-                        String state = scanner.nextLine();
+                    if(service == null){
+                        System.out.println("AddressBook not found!");
+                        break;
+                    }
 
-                        System.out.print("Zip: ");
-                        String zip = scanner.nextLine();
+                    System.out.println("\nAddressBook '" + bookName + "' opened successfully.");
 
-                        System.out.print("Phone Number: ");
-                        String phone = scanner.nextLine();
+                    addressBookMenu(service,scanner);
+                    break;
 
-                        System.out.print("Email: ");
-                        String email = scanner.nextLine();
+                case 3:
+                    manager.displayAddressBooks();
+                    break;
 
-                        Contact contact = new Contact(
-                                firstName,
-                                lastName,
-                                address,
-                                city,
-                                state,
-                                zip,
-                                phone,
-                                email
-                        );
+                case 4:
+                    System.out.println("Exiting AddressBook Application...");
+                    return;
 
-                        service.addContact(contact);
+                default:
+                    System.out.println("Invalid choice!");
+            }
+        }
+    }
 
-                        System.out.println("Contact Added Successfully!");
+    public static void addressBookMenu(AddressBookService service, Scanner scanner){
 
-                        System.out.print("Add another contact? (y/n): ");
-                        option = scanner.next().charAt(0);
-                        scanner.nextLine();
+        while(true){
 
-                    } while (option == 'y' || option == 'Y');
+            System.out.println("\n--- AddressBook Menu ---");
+            System.out.println("1 Add Contact");
+            System.out.println("2 Display Contacts");
+            System.out.println("3 Delete Contact");
+            System.out.println("4 Back");
 
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch(choice){
+
+                case 1:
+
+                    System.out.print("First Name: ");
+                    String firstName = scanner.nextLine();
+
+                    System.out.print("Last Name: ");
+                    String lastName = scanner.nextLine();
+
+                    System.out.print("City: ");
+                    String city = scanner.nextLine();
+
+                    System.out.print("Phone Number: ");
+                    String phone = scanner.nextLine();
+
+                    Contact contact = new Contact(firstName,lastName,"",city,"","",phone,"");
+
+                    service.addContact(contact);
                     break;
 
                 case 2:
@@ -86,29 +109,17 @@ public class AddressBookMain {
 
                 case 3:
 
-                    System.out.print("Enter First Name to edit: ");
-                    String editName = scanner.nextLine();
+                    System.out.print("Enter first name to delete: ");
+                    String name = scanner.nextLine();
 
-                    if(service.editContact(editName, scanner))
-                        System.out.println("Contact Updated Successfully!");
+                    if(service.deleteContact(name))
+                        System.out.println("Contact deleted successfully!");
                     else
                         System.out.println("Contact not found!");
 
                     break;
 
                 case 4:
-                    System.out.print("Enter First Name to delete: ");
-                    String deleteName = scanner.nextLine();
-
-                    if (service.deleteContact(deleteName))
-                        System.out.println("Contact Deleted Successfully!");
-                    else
-                        System.out.println("Contact not found!");
-
-                    break;
-
-                case 5:
-                    System.out.println("Exiting Address Book...");
                     return;
 
                 default:
