@@ -15,13 +15,13 @@ public class AddressBookMain {
         while (true) {
 
             System.out.println("\n----- Address Book Menu -----");
-            System.out.println("1. Add Contact");
-            System.out.println("2. Display Contacts");
-            System.out.println("3. Edit Contact");
-            System.out.println("4. Delete Contact");
-            System.out.println("5. Exit");
+            System.out.println("1 Add Contact");
+            System.out.println("2 Display Contacts");
+            System.out.println("3 Edit Contact");
+            System.out.println("4 Delete Contact");
+            System.out.println("5 Exit");
 
-            System.out.print("Enter your choice: ");
+            System.out.print("Enter choice: ");
             int choice = scanner.nextInt();
             scanner.nextLine();
 
@@ -29,44 +29,55 @@ public class AddressBookMain {
 
                 case 1:
 
-                    System.out.print("First Name: ");
-                    String firstName = scanner.nextLine();
+                    char option;
 
-                    System.out.print("Last Name: ");
-                    String lastName = scanner.nextLine();
+                    do {
 
-                    System.out.print("Address: ");
-                    String address = scanner.nextLine();
+                        System.out.print("First Name: ");
+                        String firstName = scanner.nextLine();
 
-                    System.out.print("City: ");
-                    String city = scanner.nextLine();
+                        System.out.print("Last Name: ");
+                        String lastName = scanner.nextLine();
 
-                    System.out.print("State: ");
-                    String state = scanner.nextLine();
+                        System.out.print("Address: ");
+                        String address = scanner.nextLine();
 
-                    System.out.print("Zip: ");
-                    String zip = scanner.nextLine();
+                        System.out.print("City: ");
+                        String city = scanner.nextLine();
 
-                    System.out.print("Phone Number: ");
-                    String phone = scanner.nextLine();
+                        System.out.print("State: ");
+                        String state = scanner.nextLine();
 
-                    System.out.print("Email: ");
-                    String email = scanner.nextLine();
+                        System.out.print("Zip: ");
+                        String zip = scanner.nextLine();
 
-                    Contact contact = new Contact(
-                            firstName,
-                            lastName,
-                            address,
-                            city,
-                            state,
-                            zip,
-                            phone,
-                            email
-                    );
+                        System.out.print("Phone Number: ");
+                        String phone = scanner.nextLine();
 
-                    service.addContact(contact);
+                        System.out.print("Email: ");
+                        String email = scanner.nextLine();
 
-                    System.out.println("Contact Added Successfully!");
+                        Contact contact = new Contact(
+                                firstName,
+                                lastName,
+                                address,
+                                city,
+                                state,
+                                zip,
+                                phone,
+                                email
+                        );
+
+                        service.addContact(contact);
+
+                        System.out.println("Contact Added Successfully!");
+
+                        System.out.print("Add another contact? (y/n): ");
+                        option = scanner.next().charAt(0);
+                        scanner.nextLine();
+
+                    } while (option == 'y' || option == 'Y');
+
                     break;
 
                 case 2:
@@ -75,54 +86,29 @@ public class AddressBookMain {
 
                 case 3:
 
-                    System.out.print("Enter First Name of contact to edit: ");
-                    String searchName = scanner.nextLine();
+                    System.out.print("Enter First Name to edit: ");
+                    String editName = scanner.nextLine();
 
-                    Contact existingContact = service.findContact(searchName);
-
-                    if (existingContact == null) {
+                    if(service.editContact(editName, scanner))
+                        System.out.println("Contact Updated Successfully!");
+                    else
                         System.out.println("Contact not found!");
-                        break;
-                    }
 
-                    System.out.print("New Address: ");
-                    existingContact.setAddress(scanner.nextLine());
-
-                    System.out.print("New City: ");
-                    existingContact.setCity(scanner.nextLine());
-
-                    System.out.print("New State: ");
-                    existingContact.setState(scanner.nextLine());
-
-                    System.out.print("New Zip: ");
-                    existingContact.setZip(scanner.nextLine());
-
-                    System.out.print("New Phone: ");
-                    existingContact.setPhoneNumber(scanner.nextLine());
-
-                    System.out.print("New Email: ");
-                    existingContact.setEmail(scanner.nextLine());
-
-                    System.out.println("Contact Updated Successfully!");
                     break;
 
                 case 4:
-
-                    System.out.print("Enter First Name of contact to delete: ");
+                    System.out.print("Enter First Name to delete: ");
                     String deleteName = scanner.nextLine();
 
-                    boolean deleted = service.deleteContact(deleteName);
-
-                    if (deleted) {
+                    if (service.deleteContact(deleteName))
                         System.out.println("Contact Deleted Successfully!");
-                    } else {
+                    else
                         System.out.println("Contact not found!");
-                    }
 
                     break;
 
                 case 5:
-                    System.out.println("Exiting...");
+                    System.out.println("Exiting Address Book...");
                     return;
 
                 default:
