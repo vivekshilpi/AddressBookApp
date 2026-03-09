@@ -68,4 +68,39 @@ public class AddressBookRestTest {
 
         System.out.println(response.getBody().asString());
     }
+    
+    // ---- UC 24 -----
+    @Test
+    public void givenContact_whenUpdated_shouldReturn200() {
+
+        RestAssured.baseURI = "http://localhost";
+        RestAssured.port = 3000;
+
+        // contact id to update
+        int contactId = 1;
+
+        Contact updatedContact = new Contact(
+                "Akash",
+                "Sharma",
+                "Updated Address",
+                "Bhopal",
+                "MP",
+                "462001",
+                "9999999999",
+                "akash@test.com"
+        );
+
+        Response response =
+                given()
+                .contentType(ContentType.JSON)
+                .body(updatedContact)
+                .when()
+                .put("/contacts/" + contactId);
+
+        int statusCode = response.getStatusCode();
+
+        assertEquals(200, statusCode);
+
+        System.out.println(response.getBody().asString());
+    }
 }
