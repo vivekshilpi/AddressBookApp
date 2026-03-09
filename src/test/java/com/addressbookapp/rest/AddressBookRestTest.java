@@ -103,4 +103,23 @@ public class AddressBookRestTest {
 
         System.out.println(response.getBody().asString());
     }
+    
+    // ----- UC 25 -----
+    
+    @Test
+    public void givenContact_whenDeleted_shouldReturn200() {
+
+        int contactId = 1;
+
+        Response response =
+                given()
+                .when()
+                .delete("/contacts/" + contactId);
+
+        int statusCode = response.getStatusCode();
+
+        assertEquals(200, statusCode);
+
+        System.out.println("Contact deleted successfully");
+    }
 }
