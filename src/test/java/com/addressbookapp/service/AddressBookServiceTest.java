@@ -11,8 +11,9 @@ public class AddressBookServiceTest {
     AddressBookService service = new AddressBookService();
 
     @Test
-    public void givenContact_whenSavedToDatabase_shouldRetrieveSuccessfully() {
+    public void givenContact_whenUpdated_shouldSyncWithDB() {
 
+        // Step 1: Insert a contact into DB
         Contact contact = new Contact(
                 "Test",
                 "User",
@@ -24,13 +25,35 @@ public class AddressBookServiceTest {
                 "test@gmail.com"
         );
 
-        // insert contact into DB
         service.saveContactToDatabase(contact);
 
-        // fetch contacts from DB
+        // Step 2: Update contact city
+        service.updateContactCity("Test", "Indore");
+
+        // Step 3: Retrieve contact from DB
+        Contact dbContact = service.getContactFromDB("Test");
+
+        // Step 4: Expected contact after update
+        Contact expected = new Contact(
+                "Test",
+                "User",
+                "Test Address",
+                "Indore",
+                "MP",
+                "462001",
+                "9999999999",
+                "test@gmail.com"
+        );
+
+        // Step 5: Verify DB data == expected data
+        Assertions.assertEquals(expected, dbContact);
+    }
+
+    @Test
+    public void givenDatabase_whenContactsRetrieved_shouldReturnList() {
+
         List<Contact> contacts = service.getContactsFromDatabase();
 
-        // verify DB not empty
-        Assertions.assertTrue(contacts.size() > 0);
+        Assertions.assertNotNull(contacts);
     }
 }

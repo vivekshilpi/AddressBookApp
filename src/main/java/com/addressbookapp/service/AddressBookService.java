@@ -278,4 +278,15 @@ public class AddressBookService {
 
         repository.insertContact(contact);
     }
+    
+    // ------ UC 17 -----
+    
+    public void updateContactCity(String name, String newCity){
+
+        repository.updateContactCity(name,newCity);
+    }
+    public Contact getContactFromDB(String name){
+
+        return repository.getContactByName(name);
+    }
 }

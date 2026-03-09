@@ -37,6 +37,58 @@ public class AddressBookRepository {
             System.out.println("Error inserting contact: " + e.getMessage());
         }
     }
+    
+    // UC 17- update
+    public void updateContactCity(String firstName, String newCity) {
+
+        String sql = "UPDATE contacts SET city=? WHERE first_name=?";
+
+        try(Connection conn = DBConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, newCity);
+            stmt.setString(2, firstName);
+
+            stmt.executeUpdate();
+
+            System.out.println("Contact updated successfully");
+
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    
+    public Contact getContactByName(String firstName) {
+
+        String sql = "SELECT * FROM contacts WHERE first_name=?";
+
+        try(Connection conn = DBConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, firstName);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if(rs.next()){
+
+                return new Contact(
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("address"),
+                        rs.getString("city"),
+                        rs.getString("state"),
+                        rs.getString("zip"),
+                        rs.getString("phone"),
+                        rs.getString("email")
+                );
+            }
+
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
     // GET ALL CONTACTS FROM DATABASE
     public List<Contact> getAllContacts() {

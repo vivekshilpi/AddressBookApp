@@ -98,18 +98,25 @@ public class Contact {
 		this.email = email;
 	}
 	
-	 @Override
-	    public boolean equals(Object o) {
+	@Override
+	public boolean equals(Object obj) {
 
-	        if (this == o) return true;
+	    if(this == obj) return true;
 
-	        if (o == null || getClass() != o.getClass()) return false;
+	    if(obj == null || getClass() != obj.getClass())
+	        return false;
 
-	        Contact contact = (Contact) o;
+	    Contact contact = (Contact) obj;
 
-	        return firstName.equalsIgnoreCase(contact.firstName) &&
-	               lastName.equalsIgnoreCase(contact.lastName);
-	    }
+	    return firstName.equals(contact.firstName) &&
+	           lastName.equals(contact.lastName) &&
+	           address.equals(contact.address) &&
+	           city.equals(contact.city) &&
+	           state.equals(contact.state) &&
+	           zip.equals(contact.zip) &&
+	           phoneNumber.equals(contact.phoneNumber) &&
+	           email.equals(contact.email);
+	}
 
 	    @Override
 	    public int hashCode() {
