@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Map;
 
 public class AddressBookServiceTest {
 
@@ -66,5 +67,25 @@ public class AddressBookServiceTest {
                 service.getContactsByDateRange("2024-01-01","2030-01-01");
 
         Assertions.assertNotNull(contacts);
+    }
+    
+    @Test
+    public void givenContacts_whenCountByCity_shouldReturnMap(){
+
+        AddressBookService service = new AddressBookService();
+
+        Map<String,Integer> result = service.getContactCountByCity();
+
+        Assertions.assertNotNull(result);
+    }
+    
+    @Test
+    public void givenContacts_whenCountByState_shouldReturnMap(){
+
+        AddressBookService service = new AddressBookService();
+
+        Map<String,Integer> result = service.getContactCountByState();
+
+        Assertions.assertNotNull(result);
     }
 }

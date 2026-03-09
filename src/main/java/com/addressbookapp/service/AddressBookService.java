@@ -6,6 +6,7 @@ import com.addressbookapp.repository.AddressBookRepository;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class AddressBookService {
 
@@ -294,5 +295,18 @@ public class AddressBookService {
     public List<Contact> getContactsByDateRange(String startDate,String endDate){
 
         return repository.getContactsByDateRange(startDate,endDate);
+    }
+    
+    
+    // ------ UC 19 -----
+    
+    public Map<String,Integer> getContactCountByCity(){
+
+        return repository.getContactCountByCity();
+    }
+    
+    public Map<String,Integer> getContactCountByState(){
+
+        return repository.getContactCountByState();
     }
 }

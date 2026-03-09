@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.*;
 
 public class AddressBookRepository {
 
@@ -158,5 +159,57 @@ public class AddressBookRepository {
         }
 
         return contacts;
+    }
+    
+    // ------ UC 19 -----
+    
+    public Map<String,Integer> getContactCountByCity(){
+
+        Map<String,Integer> result = new HashMap<>();
+
+        String sql = "SELECT city, COUNT(*) AS total FROM contacts GROUP BY city";
+
+        try(Connection conn = DBConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery()){
+
+            while(rs.next()){
+
+                result.put(
+                        rs.getString("city"),
+                        rs.getInt("total")
+                );
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+    
+    public Map<String,Integer> getContactCountByState(){
+
+        Map<String,Integer> result = new HashMap<>();
+
+        String sql = "SELECT state, COUNT(*) AS total FROM contacts GROUP BY state";
+
+        try(Connection conn = DBConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery()){
+
+            while(rs.next()){
+
+                result.put(
+                        rs.getString("state"),
+                        rs.getInt("total")
+                );
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return result;
     }
 }
