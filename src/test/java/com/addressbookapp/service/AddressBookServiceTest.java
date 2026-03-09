@@ -56,4 +56,15 @@ public class AddressBookServiceTest {
 
         Assertions.assertNotNull(contacts);
     }
+    
+    @Test
+    public void givenDateRange_whenContactsRetrieved_shouldReturnList(){
+
+        AddressBookService service = new AddressBookService();
+
+        List<Contact> contacts =
+                service.getContactsByDateRange("2024-01-01","2030-01-01");
+
+        Assertions.assertNotNull(contacts);
+    }
 }

@@ -289,4 +289,10 @@ public class AddressBookService {
 
         return repository.getContactByName(name);
     }
+    
+    // ------ UC 18 -----
+    public List<Contact> getContactsByDateRange(String startDate,String endDate){
+
+        return repository.getContactsByDateRange(startDate,endDate);
+    }
 }

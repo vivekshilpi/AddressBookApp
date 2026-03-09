@@ -11,32 +11,30 @@ import java.util.List;
 public class AddressBookRepository {
 
     // INSERT CONTACT INTO DATABASE
-    public void insertContact(Contact contact) {
+	public void insertContact(Contact contact) {
 
-        String sql = "INSERT INTO contacts " +
-                "(first_name, last_name, address, city, state, zip, phone, email) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+	    String sql = "INSERT INTO contacts " +
+	            "(first_name,last_name,address,city,state,zip,phone,email,date_added) " +
+	            "VALUES (?,?,?,?,?,?,?,?,CURRENT_DATE)";
 
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
+	    try(Connection conn = DBConnection.getConnection();
+	        PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, contact.getFirstName());
-            stmt.setString(2, contact.getLastName());
-            stmt.setString(3, contact.getAddress());
-            stmt.setString(4, contact.getCity());
-            stmt.setString(5, contact.getState());
-            stmt.setString(6, contact.getZip());
-            stmt.setString(7, contact.getPhoneNumber());
-            stmt.setString(8, contact.getEmail());
+	        stmt.setString(1, contact.getFirstName());
+	        stmt.setString(2, contact.getLastName());
+	        stmt.setString(3, contact.getAddress());
+	        stmt.setString(4, contact.getCity());
+	        stmt.setString(5, contact.getState());
+	        stmt.setString(6, contact.getZip());
+	        stmt.setString(7, contact.getPhoneNumber());
+	        stmt.setString(8, contact.getEmail());
 
-            stmt.executeUpdate();
+	        stmt.executeUpdate();
 
-            System.out.println("Contact inserted into database successfully.");
-
-        } catch (Exception e) {
-            System.out.println("Error inserting contact: " + e.getMessage());
-        }
-    }
+	    } catch(Exception e){
+	        e.printStackTrace();
+	    }
+	}
     
     // UC 17- update
     public void updateContactCity(String firstName, String newCity) {
@@ -122,5 +120,43 @@ public class AddressBookRepository {
         }
 
         return contactList;
+    }
+    
+    // ------ UC 18 ------
+    public List<Contact> getContactsByDateRange(String startDate, String endDate) {
+
+        List<Contact> contacts = new ArrayList<>();
+
+        String sql = "SELECT * FROM contacts WHERE date_added BETWEEN ? AND ?";
+
+        try(Connection conn = DBConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1,startDate);
+            stmt.setString(2,endDate);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next()){
+
+                Contact contact = new Contact(
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("address"),
+                        rs.getString("city"),
+                        rs.getString("state"),
+                        rs.getString("zip"),
+                        rs.getString("phone"),
+                        rs.getString("email")
+                );
+
+                contacts.add(contact);
+            }
+
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return contacts;
     }
 }
