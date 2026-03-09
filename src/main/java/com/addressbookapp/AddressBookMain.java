@@ -95,7 +95,7 @@ public class AddressBookMain {
 
                     manager.viewPersonsByState(viewByState);
                     break;
-                    
+
                 case 8:
                     manager.countByCity();
                     break;
@@ -115,24 +115,26 @@ public class AddressBookMain {
     }
 
     public static void addressBookMenu(AddressBookService service, Scanner scanner, AddressBookManager manager){
-    	    	
+
         while(true){
 
-        	System.out.println("\n--- AddressBook Menu ---");
-        	System.out.println("1 Add Contact");
-        	System.out.println("2 Display Contacts");
-        	System.out.println("3 Delete Contact");
-        	System.out.println("4 Sort Contacts by Name");
-        	System.out.println("5 Sort Contacts by City");
-        	System.out.println("6 Sort Contacts by State");
-        	System.out.println("7 Sort Contacts by Zip");
-        	System.out.println("8 Write Contacts to File");
-        	System.out.println("9 Read Contacts from File");
-        	System.out.println("10 Write Contacts to CSV");
-        	System.out.println("11 Read Contacts from CSV");
-        	System.out.println("12 Write Contacts to JSON");
-        	System.out.println("13 Read Contacts from JSON");
-        	System.out.println("14 Back");
+            System.out.println("\n--- AddressBook Menu ---");
+            System.out.println("1 Add Contact");
+            System.out.println("2 Display Contacts");
+            System.out.println("3 Delete Contact");
+            System.out.println("4 Sort Contacts by Name");
+            System.out.println("5 Sort Contacts by City");
+            System.out.println("6 Sort Contacts by State");
+            System.out.println("7 Sort Contacts by Zip");
+            System.out.println("8 Write Contacts to File");
+            System.out.println("9 Read Contacts from File");
+            System.out.println("10 Write Contacts to CSV");
+            System.out.println("11 Read Contacts from CSV");
+            System.out.println("12 Write Contacts to JSON");
+            System.out.println("13 Read Contacts from JSON");
+            System.out.println("14 Save Contact to Database");
+            System.out.println("15 View Contacts from Database");
+            System.out.println("16 Back");
 
             System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
@@ -247,6 +249,47 @@ public class AddressBookMain {
                     break;
 
                 case 14:
+
+                    System.out.print("First Name: ");
+                    String firstName = scanner.nextLine();
+
+                    System.out.print("Last Name: ");
+                    String lastName = scanner.nextLine();
+
+                    System.out.print("Address: ");
+                    String address = scanner.nextLine();
+
+                    System.out.print("City: ");
+                    String city = scanner.nextLine();
+
+                    System.out.print("State: ");
+                    String state = scanner.nextLine();
+
+                    System.out.print("Zip: ");
+                    String zip = scanner.nextLine();
+
+                    System.out.print("Phone Number: ");
+                    String phone = scanner.nextLine();
+
+                    System.out.print("Email: ");
+                    String email = scanner.nextLine();
+
+                    Contact dbContact = new Contact(firstName,lastName,address,city,state,zip,phone,email);
+
+                    service.saveContactToDatabase(dbContact);
+
+                    break;
+
+                case 15:
+
+                    System.out.println("\nContacts from Database:");
+
+                    service.getContactsFromDatabase()
+                            .forEach(System.out::println);
+
+                    break;
+
+                case 16:
                     return;
 
                 default:

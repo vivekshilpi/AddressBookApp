@@ -1,8 +1,7 @@
 package com.addressbookapp.service;
 
-import java.util.List;
-
 import com.addressbookapp.model.Contact;
+import com.addressbookapp.repository.AddressBookRepository;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -11,9 +10,13 @@ import java.util.List;
 public class AddressBookService {
 
     private List<Contact> contactList = new ArrayList<>();
-    private static final String FILE_PATH = "AddressBook.txt";
-    private static final String CSV_FILE = "AddressBook.csv";
-    private static final String JSON_FILE = "AddressBook.json";
+
+    private static final String FILE_PATH = "src/main/resources/data/AddressBook.txt";
+    private static final String CSV_FILE = "src/main/resources/data/AddressBook.csv";
+    private static final String JSON_FILE = "src/main/resources/data/AddressBook.json";
+
+    // UC16 – Repository Layer
+    private AddressBookRepository repository = new AddressBookRepository();
 
     public boolean addContact(Contact contact){
 
@@ -30,6 +33,7 @@ public class AddressBookService {
     }
 
     public void displayContacts() {
+
         if(contactList.isEmpty()){
             System.out.println("No contacts available");
             return;
@@ -39,7 +43,9 @@ public class AddressBookService {
             System.out.println(contact);
         }
     }
-    
+
+    // -------- SORTING --------
+
     public void sortContactsByName(){
 
         if(contactList.isEmpty()){
@@ -52,7 +58,7 @@ public class AddressBookService {
                 .compareToIgnoreCase(c2.getFirstName()))
                 .forEach(System.out::println);
     }
-    
+
     public void sortContactsByCity(){
 
         if(contactList.isEmpty()){
@@ -64,7 +70,7 @@ public class AddressBookService {
                 .sorted(java.util.Comparator.comparing(Contact::getCity))
                 .forEach(System.out::println);
     }
-    
+
     public void sortContactsByState(){
 
         if(contactList.isEmpty()){
@@ -76,7 +82,7 @@ public class AddressBookService {
                 .sorted(java.util.Comparator.comparing(Contact::getState))
                 .forEach(System.out::println);
     }
-    
+
     public void sortContactsByZip(){
 
         if(contactList.isEmpty()){
@@ -88,7 +94,9 @@ public class AddressBookService {
                 .sorted(java.util.Comparator.comparing(Contact::getZip))
                 .forEach(System.out::println);
     }
-    
+
+    // -------- FIND --------
+
     public Contact findContact(String firstName) {
 
         for (Contact contact : contactList) {
@@ -99,7 +107,9 @@ public class AddressBookService {
 
         return null;
     }
-    
+
+    // -------- DELETE --------
+
     public boolean deleteContact(String firstName) {
 
         Iterator<Contact> iterator = contactList.iterator();
@@ -116,11 +126,13 @@ public class AddressBookService {
 
         return false;
     }
-    
+
     public List<Contact> getContacts(){
         return contactList;
     }
-    
+
+    // -------- FILE IO --------
+
     public void writeContactsToFile(){
 
         try{
@@ -142,7 +154,7 @@ public class AddressBookService {
             System.out.println("Error writing to file: " + e.getMessage());
         }
     }
-    
+
     public void readContactsFromFile(){
 
         try{
@@ -159,7 +171,9 @@ public class AddressBookService {
             System.out.println("Error reading file: " + e.getMessage());
         }
     }
-    
+
+    // -------- CSV --------
+
     public void writeContactsToCSV() {
 
         try {
@@ -190,7 +204,7 @@ public class AddressBookService {
             System.out.println("Error writing CSV file: " + e.getMessage());
         }
     }
-    
+
     public void readContactsFromCSV() {
 
         try {
@@ -201,7 +215,7 @@ public class AddressBookService {
 
             System.out.println("\nContacts from CSV file:");
 
-            for (int i = 1; i < lines.size(); i++) {   // skip header
+            for (int i = 1; i < lines.size(); i++) {
                 System.out.println(lines.get(i));
             }
 
@@ -209,7 +223,9 @@ public class AddressBookService {
             System.out.println("Error reading CSV file: " + e.getMessage());
         }
     }
-    
+
+    // -------- JSON --------
+
     public void writeContactsToJSON() {
 
         try {
@@ -228,7 +244,7 @@ public class AddressBookService {
             System.out.println("Error writing JSON file: " + e.getMessage());
         }
     }
-    
+
     public void readContactsFromJSON() {
 
         try {
@@ -239,7 +255,7 @@ public class AddressBookService {
             java.util.List<Contact> contacts =
                     mapper.readValue(
                             new java.io.File(JSON_FILE),
-                            new com.fasterxml.jackson.core.type.TypeReference<java.util.List<Contact>>() {}
+                            new com.fasterxml.jackson.core.type.TypeReference<List<Contact>>() {}
                     );
 
             System.out.println("\nContacts from JSON file:");
@@ -250,5 +266,16 @@ public class AddressBookService {
             System.out.println("Error reading JSON file: " + e.getMessage());
         }
     }
-    
+
+    // -------- UC16 DATABASE METHODS --------
+
+    public List<Contact> getContactsFromDatabase(){
+
+        return repository.getAllContacts();
+    }
+
+    public void saveContactToDatabase(Contact contact){
+
+        repository.insertContact(contact);
+    }
 }

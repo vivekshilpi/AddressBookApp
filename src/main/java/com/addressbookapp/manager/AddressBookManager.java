@@ -42,7 +42,7 @@ public class AddressBookManager {
             System.out.println("- " + name);
         }
     }
-    
+
     public void searchByCity(String city){
 
         System.out.println("\nPersons in city: " + city);
@@ -54,7 +54,7 @@ public class AddressBookManager {
             String bookName = entry.getKey();
             AddressBookService service = entry.getValue();
 
-            for(var contact : service.getContacts()){
+            for(Contact contact : service.getContacts()){
 
                 if(contact.getCity().equalsIgnoreCase(city)){
                     System.out.println(contact + " | AddressBook: " + bookName);
@@ -79,7 +79,7 @@ public class AddressBookManager {
             String bookName = entry.getKey();
             AddressBookService service = entry.getValue();
 
-            for(var contact : service.getContacts()){
+            for(Contact contact : service.getContacts()){
 
                 if(contact.getState().equalsIgnoreCase(state)){
                     System.out.println(contact + " | AddressBook: " + bookName);
@@ -92,7 +92,7 @@ public class AddressBookManager {
             System.out.println("No person found in state: " + state);
         }
     }
-    
+
     public void updateDictionaries(Contact contact){
 
         cityDictionary
@@ -103,7 +103,7 @@ public class AddressBookManager {
                 .computeIfAbsent(contact.getState(), k -> new ArrayList<>())
                 .add(contact);
     }
-    
+
     public void viewPersonsByCity(String city){
 
         if(!cityDictionary.containsKey(city)){
@@ -116,7 +116,7 @@ public class AddressBookManager {
         cityDictionary.get(city)
                 .forEach(System.out::println);
     }
-    
+
     public void viewPersonsByState(String state){
 
         if(!stateDictionary.containsKey(state)){
@@ -129,7 +129,7 @@ public class AddressBookManager {
         stateDictionary.get(state)
                 .forEach(System.out::println);
     }
-    
+
     public void countByCity(){
 
         if(cityDictionary.isEmpty()){
@@ -142,7 +142,7 @@ public class AddressBookManager {
         cityDictionary.forEach((city, contacts) ->
                 System.out.println(city + " → " + contacts.size()));
     }
-    
+
     public void countByState(){
 
         if(stateDictionary.isEmpty()){
