@@ -5,6 +5,7 @@ import com.addressbookapp.model.Contact;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.*;
@@ -212,4 +213,76 @@ public class AddressBookRepository {
 
         return result;
     }
+    
+    // ----- UC 20 - transaction -----
+    
+    public void addContactWithTransaction(Contact contact){
+
+        String insertPerson =
+                "INSERT INTO person(first_name,last_name) VALUES (?,?)";
+
+        String insertAddress =
+                "INSERT INTO address(person_id,address,city,state,zip) VALUES (?,?,?,?,?)";
+
+        String insertContact =
+                "INSERT INTO contact_details(person_id,phone,email,date_added) VALUES (?,?,?,CURRENT_DATE)";
+
+        Connection conn = null;
+
+        try{
+            conn = DBConnection.getConnection();
+            conn.setAutoCommit(false);
+
+            // Insert person
+            PreparedStatement personStmt =
+                    conn.prepareStatement(insertPerson, Statement.RETURN_GENERATED_KEYS);
+
+            personStmt.setString(1,contact.getFirstName());
+            personStmt.setString(2,contact.getLastName());
+
+            personStmt.executeUpdate();
+
+            ResultSet keys = personStmt.getGeneratedKeys();
+            keys.next();
+
+            int personId = keys.getInt(1);
+
+            // Insert address
+            PreparedStatement addressStmt = conn.prepareStatement(insertAddress);
+
+            addressStmt.setInt(1,personId);
+            addressStmt.setString(2,contact.getAddress());
+            addressStmt.setString(3,contact.getCity());
+            addressStmt.setString(4,contact.getState());
+            addressStmt.setString(5,contact.getZip());
+
+            addressStmt.executeUpdate();
+
+            // Insert contact details
+            PreparedStatement contactStmt = conn.prepareStatement(insertContact);
+
+            contactStmt.setInt(1,personId);
+            contactStmt.setString(2,contact.getPhoneNumber());
+            contactStmt.setString(3,contact.getEmail());
+
+            contactStmt.executeUpdate();
+
+            conn.commit();
+
+            System.out.println("Contact inserted successfully with transaction");
+
+        }catch(Exception e){
+
+            try{
+                if(conn != null){
+                    conn.rollback();
+                }
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+
+            e.printStackTrace();
+        }
+    }
+    
 }

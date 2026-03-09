@@ -88,4 +88,27 @@ public class AddressBookServiceTest {
 
         Assertions.assertNotNull(result);
     }
+    
+    @Test
+    public void givenContact_whenAddedWithTransaction_shouldSyncWithDB(){
+
+        AddressBookService service = new AddressBookService();
+
+        Contact contact = new Contact(
+                "Transaction",
+                "User",
+                "Test Address",
+                "Bhopal",
+                "MP",
+                "462001",
+                "8888888888",
+                "transaction@test.com"
+        );
+
+        service.addContactWithTransaction(contact);
+
+        List<Contact> contacts = service.getContactsFromDatabase();
+
+        Assertions.assertNotNull(contacts);
+    }
 }

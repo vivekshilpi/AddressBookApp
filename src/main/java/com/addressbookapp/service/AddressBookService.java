@@ -309,4 +309,11 @@ public class AddressBookService {
 
         return repository.getContactCountByState();
     }
+    
+    // ----- UC 20 -----
+    
+    public void addContactWithTransaction(Contact contact){
+
+        repository.addContactWithTransaction(contact);
+    }
 }
