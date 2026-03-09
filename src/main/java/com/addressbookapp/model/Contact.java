@@ -2,6 +2,10 @@ package com.addressbookapp.model;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+
 public class Contact {
 
 	private String firstName;
