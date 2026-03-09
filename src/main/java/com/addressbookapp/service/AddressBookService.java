@@ -316,4 +316,34 @@ public class AddressBookService {
 
         repository.addContactWithTransaction(contact);
     }
+    
+    // ----- UC 21 ----
+    public void addContactsUsingThreads(List<Contact> contacts) {
+
+        long start = System.currentTimeMillis();
+
+        List<Thread> threads = new ArrayList<>();
+
+        for (Contact contact : contacts) {
+
+            Thread thread = new Thread(() -> {
+                repository.addContactWithTransaction(contact);
+            });
+
+            threads.add(thread);
+            thread.start();
+        }
+
+        for (Thread thread : threads) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        long end = System.currentTimeMillis();
+
+        System.out.println("Time taken with threads: " + (end - start) + " ms");
+    }
 }

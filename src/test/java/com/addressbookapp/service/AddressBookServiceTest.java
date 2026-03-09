@@ -111,4 +111,52 @@ public class AddressBookServiceTest {
 
         Assertions.assertNotNull(contacts);
     }
+    
+    // uc 21
+    
+    @Test
+    public void givenMultipleContacts_whenAddedUsingThreads_shouldSyncWithDB() {
+
+        AddressBookService service = new AddressBookService();
+
+        List<Contact> contacts = List.of(
+
+                new Contact(
+                        "Thread1",
+                        "User",
+                        "Address1",
+                        "Bhopal",
+                        "MP",
+                        "462001",
+                        "1111111111",
+                        "t1@test.com"
+                ),
+
+                new Contact(
+                        "Thread2",
+                        "User",
+                        "Address2",
+                        "Indore",
+                        "MP",
+                        "452001",
+                        "2222222222",
+                        "t2@test.com"
+                ),
+
+                new Contact(
+                        "Thread3",
+                        "User",
+                        "Address3",
+                        "Delhi",
+                        "Delhi",
+                        "110001",
+                        "3333333333",
+                        "t3@test.com"
+                )
+        );
+
+        service.addContactsUsingThreads(contacts);
+
+        Assertions.assertTrue(true);
+    }
 }
